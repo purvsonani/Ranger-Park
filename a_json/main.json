@@ -1,0 +1,77 @@
+{
+  "info": {
+    "_postman_id": "db046118-fc7b-4ac3-b781-0f4cc4d4656c",
+    "name": "OregonStatePark Live",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "getParkList",
+      "id": "b10bbcf8-e73d-455e-82e5-eede9573942f",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "https://oregon.parkportals.com/api/getParkList"
+      },
+      "response": []
+    },
+    {
+      "name": "getRangerList",
+      "id": "a08ddb2d-0dd3-4760-a38e-d828cdde3e53",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "https://oregon.parkportals.com/api/getRangerList"
+      },
+      "response": []
+    },
+    {
+      "name": "getQuestionList",
+      "id": "6b0e193a-21b0-4653-a88d-48f36617e57e",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "https://oregon.parkportals.com/api/getQuestionList"
+      },
+      "response": []
+    },
+    {
+      "name": "getImageQuestion",
+      "id": "400da9cc-03ac-4998-a1ba-ac64c64a2768",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "https://oregon.parkportals.com/api/getImageQuestion"
+      },
+      "response": []
+    },
+    {
+      "name": "getParkDetails",
+      "id": "abe30b32-d4b8-4081-985d-10393bfa1501",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "https://oregon.parkportals.com/api/getParkDetails?park_id=1",
+          "protocol": "https",
+          "host": [
+            "oregon",
+            "parkportals",
+            "com"
+          ],
+          "path": [
+            "api",
+            "getParkDetails"
+          ],
+          "query": [
+            {
+              "key": "park_id",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
