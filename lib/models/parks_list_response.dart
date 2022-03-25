@@ -1,28 +1,40 @@
+import 'dart:convert';
+
 import 'package:ranger_park/models/park_details.dart';
 
-
 class ParkListResponse {
+  ParkListResponse({
+    this.error,
+    this.data,
+  });
+
   int? error;
-  List<Data>? data;
+  List<ParkDetails>? data;
 
-  ParkListResponse({this.error, this.data});
-
-  ParkListResponse.fromJson(Map<String, dynamic> json) {
-    error = json['error'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
-      });
-    }
+  bool isSuccess() {
+    return this.error == 0;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['error'] = this.error;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  ParkListResponse.withError({int? error}) : this.error = error!;
+
+  factory ParkListResponse.fromRawJson(String str) =>
+      ParkListResponse.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ParkListResponse.fromJson(Map<String, dynamic> json) =>
+      ParkListResponse(
+        error: json["error"] == null ? null : json["error"],
+        data: json["data"] == null
+            ? null
+            : List<ParkDetails>.from(
+                json["data"].map((x) => ParkDetails.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "error": error == null ? null : error,
+        "data": data == null
+            ? null
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }

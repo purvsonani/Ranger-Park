@@ -24,4 +24,10 @@ class ConstantsStrings {
   static String pick_a_park = "PICK A PARK!";
   static String search_park = "SEARCH PARK";
   static String complete_park_for_prize = "Complete 3 parks for a prize!";
+
+  static String network_error = "No Internet Connection";
+
+  static String start_the_park = "Start This Park";
+
+
 }

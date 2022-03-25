@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ranger_park/core/utils/string_constants.dart';
 
 Dio _dio = Dio();
 
@@ -7,5 +8,10 @@ class ApiUtils {
       {required String url, Map<String, dynamic>? queryParameters}) async {
     var result = _dio.get(url, queryParameters: queryParameters);
     return result;
+  }
+
+
+  String getNetworkError(){
+    return ConstantsStrings.network_error;
   }
 }

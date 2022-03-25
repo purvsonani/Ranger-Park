@@ -65,7 +65,7 @@ class _AvatarSelectionScreenState extends State<AvatarSelectionScreen> {
 
   void onButtonTap() {
     if (_selectedAvatarIndex != -1) {
-      Get.to(() => StartScreen());
+      Get.to(() => StartScreen(name: widget.userName));
     } else {
       Fluttertoast.showToast(
           msg: ConstantsStrings.avatarToast,

@@ -1,13 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ranger_park/api/api_repository/api_repository.dart';
 import 'package:ranger_park/core/utils/color_constants.dart';
 import 'package:ranger_park/core/utils/image_constants.dart';
 import 'package:ranger_park/core/utils/string_constants.dart';
+import 'package:ranger_park/models/park_details.dart';
+import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/widgets/park_item.dart';
 import 'dart:math' as math;
 import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/fonts_constants.dart';
 
-class ActivityTab extends StatelessWidget {
+class ActivityTab extends StatefulWidget {
+  @override
+  State<ActivityTab> createState() => _ActivityTabState();
+}
+
+class _ActivityTabState extends State<ActivityTab> {
+  ApiRepository _apiRepository = ApiRepository();
+  List<ParkDetails>? _searchParksList = [];
+  List<ParkDetails>? _parksList = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _getParkList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -25,7 +47,7 @@ class ActivityTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Constants.spaceVertical(20.h),
+            Constants.spaceVertical(50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -46,6 +68,8 @@ class ActivityTab extends StatelessWidget {
             ),
             Constants.spaceVertical(200),
             buildSearch(),
+            Constants.spaceVertical(50),
+            parkList(),
           ],
         ),
       ),
@@ -108,5 +132,53 @@ class ActivityTab extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget parkList() {
+    if (isLoading) {
+      return Container(
+        child: Center(
+            child: CircularProgressIndicator(color: ColorConstants.white)),
+      );
+    }
+
+    return Container(
+      margin: EdgeInsets.only(top: 30.h),
+      child: GridView.builder(
+        shrinkWrap: true,
+        primary: false,
+        padding: EdgeInsets.symmetric(vertical: 40.h),
+        itemCount: _searchParksList?.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisExtent: 0.280.sh,
+          crossAxisSpacing: 50.w,
+          // mainAxisSpacing: 40.w,
+        ),
+        itemBuilder: (context, index) {
+          final data = _searchParksList![index];
+          return ParkItem(
+            parkDetails: data,
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _getParkList() async {
+    isLoading = true;
+    setState(() {});
+
+    try {
+      final response = await _apiRepository.getParkList();
+
+      isLoading = false;
+      setState(() {
+        _parksList = response.data;
+        _searchParksList = _parksList;
+      });
+    } on Exception catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
   }
 }

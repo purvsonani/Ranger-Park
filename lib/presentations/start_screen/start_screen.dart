@@ -9,7 +9,8 @@ import '../../core/utils/string_constants.dart';
 import '../../core/widgets/widgets_util.dart';
 
 class StartScreen extends StatefulWidget {
-  StartScreen({Key? key}) : super(key: key);
+  final String name;
+  StartScreen({required this.name});
 
   @override
   _StartScreenState createState() => _StartScreenState();
@@ -33,7 +34,7 @@ class _StartScreenState extends State<StartScreen> {
           Image.asset(ImageConstants.ic_def_ranger,
               width: 0.45.sw, height: 0.45.sw),
           Constants.spaceVertical(55),
-          Text(ConstantsStrings.learn_more,
+          Text(ConstantsStrings.learn_more.replaceAll("@", widget.name),
               style: TextStyle(fontSize: 100.sp, color: Colors.white)),
           Constants.spaceVertical(34),
           Container(
