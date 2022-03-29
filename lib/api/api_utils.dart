@@ -10,8 +10,13 @@ class ApiUtils {
     return result;
   }
 
+  Future<Response> post(
+      {required String url, Map<String, dynamic>? queryParameters}) async {
+    var result = _dio.post(url, queryParameters: queryParameters);
+    return result;
+  }
 
-  String getNetworkError(){
+  String getNetworkError() {
     return ConstantsStrings.network_error;
   }
 }

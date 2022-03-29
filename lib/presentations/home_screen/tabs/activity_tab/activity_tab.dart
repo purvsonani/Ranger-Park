@@ -6,10 +6,12 @@ import 'package:ranger_park/core/utils/color_constants.dart';
 import 'package:ranger_park/core/utils/image_constants.dart';
 import 'package:ranger_park/core/utils/string_constants.dart';
 import 'package:ranger_park/models/park_details.dart';
+import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/pages/park_details_page.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/widgets/park_item.dart';
 import 'dart:math' as math;
 import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/fonts_constants.dart';
+import 'package:get/get.dart';
 
 class ActivityTab extends StatefulWidget {
   @override
@@ -48,24 +50,7 @@ class _ActivityTabState extends State<ActivityTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Constants.spaceVertical(50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  ConstantsStrings.hello_ranger,
-                  style:
-                      TextStyle(color: ColorConstants.white, fontSize: 110.sp),
-                ),
-                Image.asset(
-                  ImageConstants.ic_bear,
-                  height: 0.045.sh,
-                ),
-              ],
-            ),
-            Text(
-              ConstantsStrings.pick_a_park,
-              style: TextStyle(color: ColorConstants.white, fontSize: 110.sp),
-            ),
+            buildHeader(),
             Constants.spaceVertical(200),
             buildSearch(),
             Constants.spaceVertical(50),
@@ -73,6 +58,23 @@ class _ActivityTabState extends State<ActivityTab> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          ConstantsStrings.pick_park,
+          style: TextStyle(color: ColorConstants.white, fontSize: 110.sp),
+        ),
+        Image.asset(
+          ImageConstants.ic_bear,
+          height: 0.045.sh,
+        ),
+      ],
     );
   }
 
@@ -159,10 +161,18 @@ class _ActivityTabState extends State<ActivityTab> {
           final data = _searchParksList![index];
           return ParkItem(
             parkDetails: data,
+            onTap: (){
+              onParkClick(data);
+            },
           );
         },
       ),
     );
+  }
+
+  void onParkClick(ParkDetails data){
+    Constants.disableKeyboard(context);
+    Get.to(() => ParkDetailsPage(parkData: data));
   }
 
   Future<void> _getParkList() async {

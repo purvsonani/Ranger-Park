@@ -36,6 +36,8 @@ dependencies:
   fluttertoast: ^8.0.9
   dio: ^4.0.4
   connectivity_plus: ^2.2.1
+  card_swiper: ^2.0.3
+  extended_image: ^6.0.2+1
 
 dev_dependencies:
   flutter_test:

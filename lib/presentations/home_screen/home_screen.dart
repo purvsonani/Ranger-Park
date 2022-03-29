@@ -4,6 +4,7 @@ import 'package:ranger_park/core/utils/color_constants.dart';
 import 'package:ranger_park/core/utils/image_constants.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/activity_tab.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/instructions_tab/instructions_tab.dart';
+import 'package:ranger_park/presentations/home_screen/tabs/rewards_tab/rewards_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -33,10 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  // void onPageChanged(int index) {
-  //   _pageController.jumpToPage(index);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,12 +45,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildBody() {
     return PageView(
       controller: _pageController,
+      physics: NeverScrollableScrollPhysics(),
       onPageChanged: (index) => setState(() {
         _selectedIndex == index;
       }),
       children: [
         ActivityTab(),
-        Center(child: Text("In progress Rewawded")),
+        RewardsTab(),
         InstructionsTab()
       ],
     );
@@ -91,42 +89,5 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Instructions",
           ),
         ]);
-    // return BottomAppBar(
-    //
-    //   color: ColorConstants.bottomAppbarBackground,
-    //   elevation: 10,
-    //   child: Container(
-    //     child: Row(
-    //       // crossAxisAlignment: CrossAxisAlignment.center,
-    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //       children: [
-    //         BottomAppbarItems(
-    //           onPressed: () {
-    //             onPageChanged(0);
-    //           },
-    //           title: ConstantsStrings.tabActivity,
-    //           index: 0,
-    //           selectedIndex: _selectedIndex,
-    //         ),
-    //         BottomAppbarItems(
-    //           onPressed: () {
-    //             onPageChanged(1);
-    //           },
-    //           title: ConstantsStrings.tabRewards,
-    //           index: 1,
-    //           selectedIndex: _selectedIndex,
-    //         ),
-    //         BottomAppbarItems(
-    //           onPressed: () {
-    //             onPageChanged(2);
-    //           },
-    //           title: ConstantsStrings.tabInstructions,
-    //           index: 2,
-    //           selectedIndex: _selectedIndex,
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

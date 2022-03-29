@@ -7,9 +7,10 @@ import 'package:ranger_park/models/park_details.dart';
 import '../../../../../core/constants/constants.dart';
 
 class ParkItem extends StatefulWidget {
-  ParkItem({Key? key, required this.parkDetails});
+  ParkItem({Key? key, required this.parkDetails , required this.onTap});
 
   ParkDetails parkDetails;
+  VoidCallback onTap;
 
   @override
   State<ParkItem> createState() => _ParkItemState();
@@ -20,40 +21,39 @@ class _ParkItemState extends State<ParkItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            height: 0.250.sh,
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 10.h,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: isLoading
-                      ? Container(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Image.network(widget.parkDetails.iconUrl.toString()),
-                ),
-                Positioned(
+    return InkWell(
+      onTap: widget.onTap,
+      child: Container(
+        child: Column(
+          children: [
+            Container(
+              height: 0.250.sh,
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 10.h,
+                    left: 0,
                     right: 0,
-                    top: -2,
-                    child: Image.asset(
-                      ImageConstants.ic_park_category,
-                      height: 70.w,
-                    ))
-              ],
+                    bottom: 0,
+                    child: Image.network(widget.parkDetails.iconUrl.toString()),
+                  ),
+                  Positioned(
+                      right: 0,
+                      top: -2,
+                      child: Image.asset(
+                        ImageConstants.ic_park_category,
+                        height: 70.w,
+                      ))
+                ],
+              ),
             ),
-          ),
-          Constants.spaceVertical(10),
-          Text(
-            ConstantsStrings.start_the_park,
-            style: TextStyle(fontSize: 40.sp),
-          ),
-        ],
+            Constants.spaceVertical(10),
+            Text(
+              ConstantsStrings.start_the_park,
+              style: TextStyle(fontSize: 40.sp),
+            ),
+          ],
+        ),
       ),
     );
   }

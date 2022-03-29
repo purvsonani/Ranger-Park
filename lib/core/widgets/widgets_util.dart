@@ -32,6 +32,35 @@ class WidgetUtil {
     );
   }
 
+  static parkDetailsButton(
+      {required VoidCallback onTap,
+      required String name,
+      required String image}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+          height: 120.h,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: ColorConstants.green),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Constants.spaceHorizontal(23),
+              CircleAvatar(
+                backgroundImage: AssetImage(image),
+                radius: 20,
+              ),
+              Constants.spaceHorizontal(20),
+              Text(
+                name,
+                style: TextStyle(color: ColorConstants.white, fontSize: 70.sp),
+              )
+            ],
+          )),
+    );
+  }
+
   static Widget buildHelpFabButton(
       {bool isKeyboardOpened = false, required VoidCallback onPressed}) {
     return Visibility(

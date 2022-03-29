@@ -20,14 +20,27 @@ class ConstantsStrings {
   static String tabRewards = "Rewards";
   static String tabInstructions = "Instructions";
 
-  static String hello_ranger = "HELLO RANGER!";
-  static String pick_a_park = "PICK A PARK!";
+  static String pick_park = "HELLO RANGER!\nPICK A PARK!";
   static String search_park = "SEARCH PARK";
   static String complete_park_for_prize = "Complete 3 parks for a prize!";
 
   static String network_error = "No Internet Connection";
 
   static String start_the_park = "Start This Park";
+
+  static String pick_rewards = "Hello Ranger!\nPICK get your\nrewards!";
+
+  static String show_map = "SHOW MAP";
+  static String park_info = "PARK INFO";
+  static String meet = "MEET";
+  static String parks_ranger = "PARKS RANGER";
+  static String activities = "ACTIVITIES";
+
+  static String text_quiz = "TEXT QUIZ";
+  static String identify_mammal = "IDENTIFY A PARK MAMMAL";
+  static String video_quiz = "VIDEO QUIZ";
+
+
 
 
 }
