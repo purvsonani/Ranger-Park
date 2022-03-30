@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+ColorConstants colorConstants = ColorConstants();
+
 class ColorConstants {
   static Color mainColor = fromHex("#445338");
 

@@ -3,6 +3,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ranger_park/core/constant_parameters/constant_parameters.dart';
 import 'package:ranger_park/core/constants/constants.dart';
 import 'package:ranger_park/core/utils/color_constants.dart';
 import 'package:ranger_park/core/utils/fonts_constants.dart';
@@ -10,6 +11,10 @@ import 'package:ranger_park/core/utils/image_constants.dart';
 import 'package:ranger_park/core/utils/string_constants.dart';
 import 'package:ranger_park/models/park_details.dart';
 import 'package:get/get.dart';
+import 'package:ranger_park/models/question_model.dart';
+import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/pages/ranger_profile.dart';
+import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/pages/text_quiz_activity.dart';
+import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/widgets/activity_item.dart';
 import '../../../../../api/api_repository/api_repository.dart';
 import '../../../../../core/widgets/widgets_util.dart';
 
@@ -28,6 +33,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
   bool isLoading = false;
   List<String>? swiperList = [];
   ParkDetails? parkDetails;
+  List<QuestionModel>? activityList = [];
 
   @override
   void initState() {
@@ -52,6 +58,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
               children: [
                 buildSwiper(),
                 buildParkDetails(),
+                buildActivitiesList(),
               ],
             ),
             Positioned(
@@ -184,30 +191,34 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
             ConstantsStrings.activities,
             style: TextStyle(color: ColorConstants.white, fontSize: 120.sp),
           ),
-          Constants.spaceVertical(80),
-          WidgetUtil.parkDetailsButton(
-              onTap: () {},
-              name: ConstantsStrings.text_quiz,
-              image: ImageConstants.ic_badge),
-          Constants.spaceVertical(50),
-          WidgetUtil.parkDetailsButton(
-              onTap: () {},
-              name: ConstantsStrings.identify_mammal,
-              image: ImageConstants.ic_badge),
-          Constants.spaceVertical(50),
-          WidgetUtil.parkDetailsButton(
-              onTap: () {},
-              name: ConstantsStrings.video_quiz,
-              image: ImageConstants.ic_badge),
-          Constants.spaceVertical(60),
         ],
       ),
     );
   }
 
+  Widget buildActivitiesList() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
+      child: ListView.builder(
+          shrinkWrap: true,
+          primary: false,
+          itemCount: activityList?.length,
+          itemBuilder: (context, index) {
+            final data = activityList![index];
+            return ActivityItem(
+                onPressed: () {
+                  _onActivityTap(data);
+                },
+                questionModelData: data);
+          }),
+    );
+  }
+
   Widget _buildProfileButton() {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        _onRangerClicked();
+      },
       style: ElevatedButton.styleFrom(
           shape: StadiumBorder(),
           primary: ColorConstants.mainColor,
@@ -250,6 +261,55 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
     );
   }
 
+  // void _onActivityTap(QuestionModel data) {
+  //   switch (data.type) {
+  //     case ParameterConstants.ACTIVITY_TYPE_TEXT_Q:
+  //       switch (data.mediaType) {
+  //         case ParameterConstants.MEDIA_TYPE_TEXT:
+  //           Get.to(() => TextQuizActivity(data: data,parkData: parkDetails,));
+  //           break;
+  //
+  //         case ParameterConstants.MEDIA_TYPE_IMAGE:
+  //           // Get.to();
+  //           break;
+  //         case ParameterConstants.MEDIA_TYPE_TEXT:
+  //           // Get.to();
+  //           break;
+  //       }
+  //       break;
+  //     case ParameterConstants.ACTIVITY_TYPE_IMAGE_UPLOAD_Q:
+  //       break;
+  //   }
+  // }
+
+  void _onActivityTap(QuestionModel data) async {
+    switch (data.type) {
+      case ParameterConstants.ACTIVITY_TYPE_TEXT_Q:
+        switch (data.mediaType) {
+          case ParameterConstants.MEDIA_TYPE_VIDEO:
+            // Get.to(ActivityQuiz(data: data, parkData: widget.parkData));
+            break;
+
+          case ParameterConstants.MEDIA_TYPE_IMAGE:
+            // Get.to(ActivityQuiz(data: data, parkData: widget.parkData));
+            break;
+
+          case ParameterConstants.MEDIA_TYPE_TEXT:
+            Get.to(IdentifyMammal(data: data, parkData: widget.parkData));
+            break;
+        }
+        break;
+
+      case ParameterConstants.ACTIVITY_TYPE_IMAGE_UPLOAD_Q:
+        // Get.to(ActivityImageUpload(data: data, parkData: widget.parkData));
+        break;
+    }
+  }
+
+  void _onRangerClicked() {
+    Get.to(() => RangerProfilePage());
+  }
+
   void _getParkDetails() async {
     isLoading = true;
     setState(() {});
@@ -263,6 +323,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
       setState(() {
         parkDetails = response.data;
         swiperList = parkDetails?.imageUrl;
+        activityList = response.questionList;
       });
     } on Exception catch (e) {
       print("************_getParkDetails() exception**************");

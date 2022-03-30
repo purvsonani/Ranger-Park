@@ -40,6 +40,9 @@ class ConstantsStrings {
   static String identify_mammal = "IDENTIFY A PARK MAMMAL";
   static String video_quiz = "VIDEO QUIZ";
 
+  static String park_ranger = "PARK RANGER";
+  static String oregon_states_park = "Oregon State Parks";
+
 
 
 
