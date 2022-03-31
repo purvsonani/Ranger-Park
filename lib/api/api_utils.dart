@@ -3,6 +3,8 @@ import 'package:ranger_park/core/utils/string_constants.dart';
 
 Dio _dio = Dio();
 
+ApiUtils apiUtils = ApiUtils();
+
 class ApiUtils {
   Future<Response> get(
       {required String url, Map<String, dynamic>? queryParameters}) async {

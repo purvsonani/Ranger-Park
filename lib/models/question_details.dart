@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-class QuestionList {
-  QuestionList({
+import 'answer_details.dart';
+
+class QuestionDetails {
+  QuestionDetails({
     this.id,
     this.title,
     this.subText,
@@ -21,6 +23,8 @@ class QuestionList {
     this.createdAt,
     this.updatedAt,
     this.activityIconUrl,
+    this.answerDetail,
+    this.deletedAt
   });
 
   final int? id;
@@ -40,15 +44,18 @@ class QuestionList {
   final String? activityIcon;
   final int? parkId;
   final DateTime? createdAt;
+  final DateTime? deletedAt;
   final DateTime? updatedAt;
   final String? activityIconUrl;
+  List<AnswerDetails>? answerDetail = [];
 
-  factory QuestionList.fromRawJson(String str) =>
-      QuestionList.fromJson(json.decode(str));
+  factory QuestionDetails.fromRawJson(String str) =>
+      QuestionDetails.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory QuestionList.fromJson(Map<String, dynamic> json) => QuestionList(
+  factory QuestionDetails.fromJson(Map<String, dynamic> json) =>
+      QuestionDetails(
         id: json["id"] == null ? null : json["id"],
         title: json["title"] == null ? null : json["title"],
         subText: json["sub_text"] == null ? null : json["sub_text"],
@@ -72,12 +79,19 @@ class QuestionList {
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
+        deletedAt: json["deleted_at"] == null
+            ? null
+            : DateTime.parse(json["deleted_at"]),
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
         activityIconUrl: json["activity_icon_url"] == null
             ? null
             : json["activity_icon_url"],
+        answerDetail: json["answer_detail"] == null
+            ? null
+            : List<AnswerDetails>.from(
+                json["answer_detail"].map((x) => AnswerDetails.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -98,7 +112,11 @@ class QuestionList {
         "activity_icon": activityIcon == null ? null : activityIcon,
         "park_id": parkId == null ? null : parkId,
         "created_at": createdAt == null ? null : createdAt?.toIso8601String(),
+        "deleted_at": deletedAt == null ? null : deletedAt?.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt?.toIso8601String(),
         "activity_icon_url": activityIconUrl == null ? null : activityIconUrl,
+        "answer_detail": answerDetail == null
+            ? null
+            : List<dynamic>.from(answerDetail!.map((x) => x.toJson())),
       };
 }

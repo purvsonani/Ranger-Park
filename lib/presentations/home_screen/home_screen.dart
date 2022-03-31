@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ranger_park/core/utils/color_constants.dart';
 import 'package:ranger_park/core/utils/image_constants.dart';
+import 'package:ranger_park/core/widgets/keep_alive_page.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/activity_tab.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/instructions_tab/instructions_tab.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/rewards_tab/rewards_tab.dart';
@@ -50,8 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
         _selectedIndex == index;
       }),
       children: [
-        ActivityTab(),
-        RewardsTab(),
+        KeepAlivePage(child: ActivityTab()),
+        KeepAlivePage(child: RewardsTab()),
         InstructionsTab()
       ],
     );

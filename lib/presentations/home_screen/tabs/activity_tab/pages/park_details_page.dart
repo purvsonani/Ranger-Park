@@ -9,6 +9,7 @@ import 'package:ranger_park/core/utils/color_constants.dart';
 import 'package:ranger_park/core/utils/fonts_constants.dart';
 import 'package:ranger_park/core/utils/image_constants.dart';
 import 'package:ranger_park/core/utils/string_constants.dart';
+import 'package:ranger_park/core/widgets/custom_progress_view.dart';
 import 'package:ranger_park/models/park_details.dart';
 import 'package:get/get.dart';
 import 'package:ranger_park/models/question_model.dart';
@@ -16,7 +17,6 @@ import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/pages/ra
 import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/pages/text_quiz_activity.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/widgets/activity_item.dart';
 import '../../../../../api/api_repository/api_repository.dart';
-import '../../../../../core/widgets/widgets_util.dart';
 
 class ParkDetailsPage extends StatefulWidget {
   final ParkDetails parkData;
@@ -30,7 +30,7 @@ class ParkDetailsPage extends StatefulWidget {
 class _ParkDetailsPageState extends State<ParkDetailsPage> {
   ApiRepository _apiRepository = ApiRepository();
 
-  bool isLoading = false;
+  bool _isLoading = false;
   List<String>? swiperList = [];
   ParkDetails? parkDetails;
   List<QuestionModel>? activityList = [];
@@ -43,8 +43,11 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: buildBody(),
+    return CustomProgressView(
+      isLoading: _isLoading,
+      child: Scaffold(
+        body: buildBody(),
+      ),
     );
   }
 
@@ -124,6 +127,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
     return Container(
       height: 0.52.sh,
       child: Swiper(
+        loop: false,
         itemCount: swiperList!.length,
         itemHeight: double.infinity,
         pagination: SwiperPagination(
@@ -138,10 +142,26 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             color: ColorConstants.black,
-            child: Image.network(
+            child:
+            // CachedNetworkImage(
+            //   imageUrl: swiperList![index],
+            //   imageBuilder: (context, imageProvider) => Container(
+            //     decoration: BoxDecoration(
+            //       image: DecorationImage(
+            //           image: imageProvider,
+            //           fit: BoxFit.cover,
+            //           colorFilter:
+            //           ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+            //     ),
+            //   ),
+            //   // placeholder: (context, url) => CircularProgressIndicator(),
+            //   errorWidget: (context, url, error) => Icon(Icons.error),
+            // ),
+            ExtendedImage.network(
               swiperList![index],
               height: double.infinity,
               fit: BoxFit.cover,
+              cache: true,
             ),
           );
         },
@@ -215,28 +235,31 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
   }
 
   Widget _buildProfileButton() {
-    return ElevatedButton.icon(
-      onPressed: () {
-        _onRangerClicked();
-      },
-      style: ElevatedButton.styleFrom(
-          shape: StadiumBorder(),
-          primary: ColorConstants.mainColor,
-          minimumSize: Size(0.5.sw, 130.w),
-          padding: EdgeInsets.only(right: 40.w),
-          side: BorderSide(width: 5.w, color: ColorConstants.white)),
-      icon: ExtendedImage.network(parkDetails?.rangerImage ?? "",
-          width: 130.w,
-          height: 130.w,
-          cache: true,
-          shape: BoxShape.circle,
-          fit: BoxFit.cover,
-          border: Border.all(width: 5.w, color: ColorConstants.white)),
-      label: Text(
-          "${ConstantsStrings.meet} ${parkDetails?.name ?? ""}, ${ConstantsStrings.parks_ranger}",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: ColorConstants.white, letterSpacing: 1, fontSize: 42.sp)),
+    return Container(
+      child: ElevatedButton.icon(
+        onPressed: () {
+          _onRangerClicked();
+        },
+        style: ElevatedButton.styleFrom(
+          fixedSize: Size(0.72.sw, 130.w),
+            shape: StadiumBorder(),
+            primary: ColorConstants.mainColor,
+            // minimumSize: Size(0.5.sw, 130.w),
+            padding: EdgeInsets.only(right: 40.w),
+            side: BorderSide(width: 5.w, color: ColorConstants.white)),
+        icon: ExtendedImage.network(parkDetails?.rangerImage ?? "",
+            width: 130.w,
+            height: 130.w,
+            cache: true,
+            shape: BoxShape.circle,
+            fit: BoxFit.cover,
+            border: Border.all(width: 5.w, color: ColorConstants.white)),
+        label: Text(
+            "${ConstantsStrings.meet} ${parkDetails?.name ?? ""}, ${ConstantsStrings.parks_ranger}",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: ColorConstants.white, letterSpacing: 1, fontSize: 42.sp)),
+      ),
     );
   }
 
@@ -261,27 +284,6 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
     );
   }
 
-  // void _onActivityTap(QuestionModel data) {
-  //   switch (data.type) {
-  //     case ParameterConstants.ACTIVITY_TYPE_TEXT_Q:
-  //       switch (data.mediaType) {
-  //         case ParameterConstants.MEDIA_TYPE_TEXT:
-  //           Get.to(() => TextQuizActivity(data: data,parkData: parkDetails,));
-  //           break;
-  //
-  //         case ParameterConstants.MEDIA_TYPE_IMAGE:
-  //           // Get.to();
-  //           break;
-  //         case ParameterConstants.MEDIA_TYPE_TEXT:
-  //           // Get.to();
-  //           break;
-  //       }
-  //       break;
-  //     case ParameterConstants.ACTIVITY_TYPE_IMAGE_UPLOAD_Q:
-  //       break;
-  //   }
-  // }
-
   void _onActivityTap(QuestionModel data) async {
     switch (data.type) {
       case ParameterConstants.ACTIVITY_TYPE_TEXT_Q:
@@ -291,11 +293,11 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
             break;
 
           case ParameterConstants.MEDIA_TYPE_IMAGE:
-            // Get.to(ActivityQuiz(data: data, parkData: widget.parkData));
+            Get.to(() => TextQuizActivity(data: data, parkData: widget.parkData));
             break;
 
           case ParameterConstants.MEDIA_TYPE_TEXT:
-            Get.to(IdentifyMammal(data: data, parkData: widget.parkData));
+            // Get.to(IdentifyMammal(data: data, parkData: widget.parkData));
             break;
         }
         break;
@@ -311,13 +313,13 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
   }
 
   void _getParkDetails() async {
-    isLoading = true;
+    _isLoading = true;
     setState(() {});
 
     try {
       final response =
           await _apiRepository.getParkDetails(park_id: widget.parkData.id!);
-      isLoading = false;
+      _isLoading = false;
       parkDetails = widget.parkData;
 
       setState(() {
