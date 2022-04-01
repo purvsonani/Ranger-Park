@@ -1,43 +1,41 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:ranger_park/api/api_repository/api_repository.dart';
-import 'package:ranger_park/core/constants/constants.dart';
-import 'package:ranger_park/core/utils/color_constants.dart';
-import 'package:ranger_park/core/utils/fonts_constants.dart';
-import 'package:ranger_park/core/utils/image_constants.dart';
-import 'package:ranger_park/core/utils/string_constants.dart';
-import 'package:ranger_park/core/widgets/custom_progress_view.dart';
-import 'package:ranger_park/core/widgets/widgets_util.dart';
 import 'package:ranger_park/models/park_details.dart';
 import 'package:ranger_park/models/question_details.dart';
-import 'package:ranger_park/models/question_model.dart';
-import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/widgets/answer_item.dart';
+import 'package:get/get.dart';
+import '../../../../../api/api_repository/api_repository.dart';
+import '../../../../../core/constants/constants.dart';
+import '../../../../../core/utils/color_constants.dart';
+import '../../../../../core/utils/fonts_constants.dart';
+import '../../../../../core/utils/image_constants.dart';
+import '../../../../../core/utils/string_constants.dart';
+import '../../../../../core/widgets/custom_progress_view.dart';
+import '../../../../../core/widgets/widgets_util.dart';
+import '../../../../../models/question_model.dart';
+import '../widgets/identify_mammal_item.dart';
 
-class TextQuizActivity extends StatefulWidget {
+class IdentifyMammal extends StatefulWidget {
   final QuestionModel data;
   final ParkDetails? parkData;
 
-  TextQuizActivity({required this.data, required this.parkData});
+  IdentifyMammal({required this.data, required this.parkData});
 
   @override
-  State<TextQuizActivity> createState() => _TextQuizActivityState();
+  State<IdentifyMammal> createState() => _IdentifyMammalState();
 }
 
-class _TextQuizActivityState extends State<TextQuizActivity> {
+class _IdentifyMammalState extends State<IdentifyMammal> {
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _getQuestionDetails();
   }
 
-  bool _isLoading = false;
-  int _selectedAnsIndex = -1;
-  bool _showAnswerField = false;
-  QuestionDetails? questionDetails;
   TextEditingController _answerController = TextEditingController();
+  QuestionDetails? _questionDetails;
+  bool _isLoading = false;
+  bool _showAnswerField = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +57,7 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20.h),
       child: Column(
-        children: [
-          _buildHeader(),
-          Constants.spaceVertical(50),
-          _buildInfo(),
-        ],
+        children: [_buildHeader(), Constants.spaceVertical(60), _buildInfo()],
       ),
     );
   }
@@ -93,7 +87,7 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
               Expanded(
                   child: Container(
                 child: Text(
-                  "${questionDetails?.title}",
+                  "${_questionDetails?.title ?? ""}",
                   style: TextStyle(fontSize: 100.sp),
                   textAlign: TextAlign.center,
                 ),
@@ -106,7 +100,7 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
           ),
           Container(
             child: Text(
-              "${questionDetails?.subText}",
+              "${_questionDetails?.subText ?? ""}",
               style: TextStyle(fontSize: 50.sp, fontFamily: FONT_FRAUNCES),
             ),
           )
@@ -125,45 +119,28 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
             children: [
               Container(
                 child: Text(
-                  "${questionDetails?.queTitle ?? ""}",
+                  "${_questionDetails?.queTitle ?? ""}",
                   textAlign: TextAlign.left,
                   style:
-                      TextStyle(fontSize: 120.sp, color: ColorConstants.white),
+                      TextStyle(fontSize: 118.sp, color: ColorConstants.white),
                 ),
               ),
               Constants.spaceVertical(20),
               Container(
-                child:
-                    //     CachedNetworkImage(
-                    //   imageUrl: "${questionDetails?.imageVideoUrl ?? ""}",
-                    //   placeholder: (context, url) => CircularProgressIndicator(),
-                    //   errorWidget: (context, url, error) => Icon(Icons.error),
-                    // )
-                    ExtendedImage.network(
-                  "${questionDetails?.imageVideoUrl ?? ""}",
-                  cache: true,
-                ),
-              ),
-              Constants.spaceVertical(30),
-              Container(
                 child: Text(
-                  "${questionDetails?.subtextTitle ?? ""}",
+                  "${_questionDetails?.question ?? ""}",
                   style: TextStyle(
                     fontFamily: FONT_FRAUNCES,
-                    fontSize: 65.sp,
+                    fontSize: 60.sp,
                     color: ColorConstants.white,
                   ),
                 ),
               ),
-              Constants.spaceVertical(150),
-              Text(
-                "${questionDetails?.question ?? ""}",
-                style: TextStyle(color: ColorConstants.white, fontSize: 130.sp),
-              ),
-              Constants.spaceVertical(80),
+              Constants.spaceVertical(130),
               _buildAnswerList(),
-              Constants.spaceVertical(80),
-              _buildBottom()
+              Constants.spaceVertical(50),
+              _buildBottom(),
+              Constants.spaceVertical(70),
             ],
           ),
         ),
@@ -172,7 +149,7 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
   }
 
   Widget _buildAnswerList() {
-    if (questionDetails == null) {
+    if (_questionDetails == null) {
       return Container();
     }
     if (!_showAnswerField)
@@ -180,18 +157,16 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
         child: GridView.builder(
           shrinkWrap: true,
           primary: false,
-          itemCount: questionDetails?.answerDetail?.length,
+          itemCount: _questionDetails?.answerDetail?.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, crossAxisSpacing: 50.h, mainAxisSpacing: 20.w),
+            mainAxisExtent: 0.30.sh,
+            crossAxisCount: 2,
+            crossAxisSpacing: 30.h,
+          ),
           itemBuilder: (context, index) {
-            final data = questionDetails?.answerDetail![index];
-            final bool selected = _selectedAnsIndex == index;
-            return AnswerItem(
-              onPressed: () {
-                _selectedAnsIndex = index;
-                setState(() {});
-              },
-              selected: selected,
+            final data = _questionDetails?.answerDetail![index];
+            return IdentifyMammmalItem(
+              onPressed: () {},
               index: index,
               data: data,
             );
@@ -232,12 +207,12 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
           Constants.spaceVertical(85),
           WidgetUtil.startAdventureButtonWidget(
               onPressed: () {},
-              btnTitle: "${questionDetails?.btnText}",
+              btnTitle: "${_questionDetails?.btnText}",
               btnTextStyle: TextStyle(
                 color: ColorConstants.mainColor,
                 fontSize: 70.sp,
               ),
-              image: "${questionDetails?.activityIconUrl}"),
+              image: "${_questionDetails?.activityIconUrl}"),
         ],
       ),
     );
@@ -247,23 +222,13 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
     return Container(
       child: Column(
         children: [
-          if (_selectedAnsIndex != -1 && !_showAnswerField)
-            WidgetUtil.startAdventureButtonWidget(
-                onPressed: () {},
-                btnTitle: "${questionDetails?.btnText}",
-                btnTextStyle: TextStyle(
-                  color: ColorConstants.mainColor,
-                  fontSize: 70.sp,
-                ),
-                image: "${questionDetails?.activityIconUrl}"),
-          Constants.spaceVertical(45),
           if (!_showAnswerField)
             WidgetUtil.noAnswerFoundButton(
                 onPressed: () {
                   _showAnswerField = true;
                   setState(() {});
                 },
-                image: "${questionDetails?.activityIconUrl}")
+                image: "${_questionDetails?.activityIconUrl}")
         ],
       ),
     );
@@ -280,7 +245,7 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
         if (result != null) {
           if (result.isSuccess()) {
             if (result.data != null) {
-              questionDetails = result.data;
+              _questionDetails = result.data;
             }
           } else {
             print("**************Result Null getQuestionDetails()**********");

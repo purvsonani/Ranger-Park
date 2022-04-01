@@ -22,7 +22,7 @@ class AnswerItem extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Card(
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(90.w)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(90.w)),
         elevation: selected ? 15 : 0,
         color: selected ? ColorConstants.white : ColorConstants.green,
         child: Container(
@@ -42,24 +42,5 @@ class AnswerItem extends StatelessWidget {
         ),
       ),
     );
-    // return MaterialButton(
-    //   splashColor: null,
-    //   height: 0.38.sw,
-    //   onPressed: onPressed,
-    //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.r)),
-    //   child: Container(
-    //     height: 0.38.sw,
-    //     decoration: BoxDecoration(
-    //       borderRadius: BorderRadius.circular(100.r),
-    //       color: selected ? ColorConstants.white : ColorConstants.green,
-    //     ),
-    //     child: Center(
-    //       child: Text(
-    //         "${data?.imageTitle}",
-    //         style: TextStyle(color: ColorConstants.mainColor ,fontSize: 70.sp),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

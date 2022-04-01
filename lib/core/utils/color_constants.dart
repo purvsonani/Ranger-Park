@@ -11,6 +11,8 @@ class ColorConstants {
   static Color yellow = Colors.yellow;
 
   static Color green = fromHex("#80986C");
+  static Color darkGreen = fromHex("#304322");
+
   static Color textFieldBorder = fromHex("#80986C");
 
   static Color avatarShadow = fromHex("#00000042");
@@ -23,6 +25,7 @@ class ColorConstants {
   static Color notSelectedTabText = fromHex("#304322");
 
   static Color suffixIconBackground = fromHex("#4E5F40");
+
 
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();

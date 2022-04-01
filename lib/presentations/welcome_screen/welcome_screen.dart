@@ -45,12 +45,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Image.asset(ImageConstants.ic_def_ranger,
                 width: 0.45.sw, height: 0.45.sw),
             Constants.spaceVertical(55),
-            Text(ConstantsStrings.welcome,
+            Text(StringConstants.welcome,
                 style: TextStyle(fontSize: 200.sp, color: Colors.white)),
             Constants.spaceVertical(34),
             Container(
               width: 250.w,
-              child: Text(ConstantsStrings.hello_ranger_whats_,
+              child: Text(StringConstants.hello_ranger_whats_,
                   style: TextStyle(fontSize: 108.sp)),
             ),
             Constants.spaceVertical(60),
@@ -74,7 +74,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ));
     } else {
       Fluttertoast.showToast(
-        msg: ConstantsStrings.nameToast,
+        msg: StringConstants.nameToast,
         backgroundColor: ColorConstants.black,
         textColor: ColorConstants.white,
         gravity: ToastGravity.BOTTOM,

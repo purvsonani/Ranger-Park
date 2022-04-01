@@ -58,12 +58,12 @@ class _RangerProfilePageState extends State<RangerProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      ConstantsStrings.park_ranger,
+                      StringConstants.park_ranger,
                       style: TextStyle(fontSize: 90.sp),
                     ),
                     Constants.spaceVertical(30),
                     Text(
-                      ConstantsStrings.oregon_states_park,
+                      StringConstants.oregon_states_park,
                       style:
                           TextStyle(fontSize: 45.sp, fontFamily: FONT_FRAUNCES),
                     ),

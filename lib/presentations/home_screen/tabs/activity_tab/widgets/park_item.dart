@@ -49,7 +49,7 @@ class _ParkItemState extends State<ParkItem> {
             ),
             Constants.spaceVertical(10),
             Text(
-              ConstantsStrings.start_the_park,
+              StringConstants.start_the_park,
               style: TextStyle(fontSize: 40.sp),
             ),
           ],

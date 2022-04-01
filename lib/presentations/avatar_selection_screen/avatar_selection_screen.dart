@@ -44,7 +44,7 @@ class _AvatarSelectionScreenState extends State<AvatarSelectionScreen> {
             Container(
               width: 250.w,
               child: Text(
-                  ConstantsStrings.hello_user.replaceAll("@", widget.userName),
+                  StringConstants.hello_user.replaceAll("@", widget.userName),
                   style:
                       TextStyle(fontSize: 108.sp, color: ColorConstants.white)),
             ),
@@ -68,7 +68,7 @@ class _AvatarSelectionScreenState extends State<AvatarSelectionScreen> {
       Get.to(() => StartScreen(name: widget.userName));
     } else {
       Fluttertoast.showToast(
-          msg: ConstantsStrings.avatarToast,
+          msg: StringConstants.avatarToast,
           backgroundColor: ColorConstants.black,
           textColor: ColorConstants.white,
           gravity: ToastGravity.BOTTOM,

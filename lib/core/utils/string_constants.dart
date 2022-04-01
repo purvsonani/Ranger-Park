@@ -1,4 +1,4 @@
-class ConstantsStrings {
+class StringConstants {
   static String welcome = 'Welcome!';
   static String hello_ranger_whats_ = "HELLO RANGER!\nWHAT'S YOUR\nNAME?";
   static String hello_user =
@@ -43,7 +43,7 @@ class ConstantsStrings {
   static String park_ranger = "PARK RANGER";
   static String oregon_states_park = "Oregon State Parks";
 
+  static String no_answer_found = "NO ANSWER FOUND";
 
-
-
+  static String type_here = "Type here...";
 }

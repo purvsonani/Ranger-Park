@@ -67,7 +67,7 @@ class _ActivityTabState extends State<ActivityTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          ConstantsStrings.pick_park,
+          StringConstants.pick_park,
           style: TextStyle(color: ColorConstants.white, fontSize: 110.sp),
         ),
         Image.asset(
@@ -118,7 +118,7 @@ class _ActivityTabState extends State<ActivityTab> {
                     borderSide:
                         BorderSide(color: ColorConstants.white, width: 2)),
                 border: InputBorder.none,
-                hintText: ConstantsStrings.search_park,
+                hintText: StringConstants.search_park,
                 hintStyle: TextStyle(
                     color: ColorConstants.textFieldBorder, fontSize: 60.sp),
                 contentPadding:
@@ -126,7 +126,7 @@ class _ActivityTabState extends State<ActivityTab> {
           ),
           Constants.spaceVertical(25),
           Text(
-            ConstantsStrings.complete_park_for_prize,
+            StringConstants.complete_park_for_prize,
             style: TextStyle(
               fontFamily: FONT_FRAUNCES,
             ),

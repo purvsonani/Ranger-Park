@@ -19,6 +19,6 @@ class ApiUtils {
   }
 
   String getNetworkError() {
-    return ConstantsStrings.network_error;
+    return StringConstants.network_error;
   }
 }

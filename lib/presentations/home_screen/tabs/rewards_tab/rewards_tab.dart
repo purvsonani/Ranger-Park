@@ -37,7 +37,7 @@ class RewardsTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          ConstantsStrings.pick_rewards,
+          StringConstants.pick_rewards,
           style: TextStyle(color: ColorConstants.white, fontSize: 110.sp),
         ),
         Image.asset(

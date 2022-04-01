@@ -17,6 +17,7 @@ import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/pages/ra
 import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/pages/text_quiz_activity.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/widgets/activity_item.dart';
 import '../../../../../api/api_repository/api_repository.dart';
+import 'identify_mammal.dart';
 
 class ParkDetailsPage extends StatefulWidget {
   final ParkDetails parkData;
@@ -188,7 +189,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
                   ),
                   Constants.spaceVertical(45),
                   _buildButton(
-                      buttonName: ConstantsStrings.show_map, onPressed: () {})
+                      buttonName: StringConstants.show_map, onPressed: () {})
                 ],
               ),
               Column(
@@ -199,7 +200,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
                   ),
                   Constants.spaceVertical(50),
                   _buildButton(
-                      buttonName: ConstantsStrings.park_info, onPressed: () {})
+                      buttonName: StringConstants.park_info, onPressed: () {})
                 ],
               ),
             ],
@@ -208,7 +209,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
           _buildProfileButton(),
           Constants.spaceVertical(70),
           Text(
-            ConstantsStrings.activities,
+            StringConstants.activities,
             style: TextStyle(color: ColorConstants.white, fontSize: 120.sp),
           ),
         ],
@@ -255,7 +256,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
             fit: BoxFit.cover,
             border: Border.all(width: 5.w, color: ColorConstants.white)),
         label: Text(
-            "${ConstantsStrings.meet} ${parkDetails?.name ?? ""}, ${ConstantsStrings.parks_ranger}",
+            "${StringConstants.meet} ${parkDetails?.name ?? ""}, ${StringConstants.parks_ranger}",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: ColorConstants.white, letterSpacing: 1, fontSize: 42.sp)),
@@ -297,7 +298,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
             break;
 
           case ParameterConstants.MEDIA_TYPE_TEXT:
-            // Get.to(IdentifyMammal(data: data, parkData: widget.parkData));
+             Get.to(IdentifyMammal(data: data, parkData: widget.parkData));
             break;
         }
         break;

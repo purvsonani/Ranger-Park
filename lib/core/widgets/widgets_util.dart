@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ranger_park/core/constants/constants.dart';
@@ -24,10 +25,70 @@ class WidgetUtil {
               ),
               Constants.spaceHorizontal(100),
               Text(
-                ConstantsStrings.buttonText,
+                StringConstants.buttonText,
                 style: TextStyle(color: ColorConstants.black, fontSize: 60.sp),
               )
             ],
+          )),
+    );
+  }
+
+  static Widget startAdventureButtonWidget(
+      {required VoidCallback onPressed,
+      required String btnTitle,
+      required TextStyle btnTextStyle,
+      required String image}) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+          //fixedSize: Size.fromHeight(130.h),
+          shape: StadiumBorder(),
+          padding: EdgeInsets.symmetric(horizontal: 25.w),
+          onPrimary: ColorConstants.green,
+          primary: ColorConstants.startAdventureButtonColor),
+      child: Container(
+        height: 150.w,
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Image.network(image, height: 100.h),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(btnTitle, style: btnTextStyle),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Widget noAnswerFoundButton(
+      {required VoidCallback onPressed, required String image}) {
+    return Container(
+      height: 0.073.sh,
+      width: double.infinity,
+      child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            primary: ColorConstants.darkGreen,
+            onPrimary: ColorConstants.darkGreen,
+            shape: StadiumBorder(),
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+          ),
+          onPressed: onPressed,
+          icon: ExtendedImage.network(
+            image,
+            cache: true,
+            height: 0.06.sh,
+          ),
+          label: Text(
+            StringConstants.no_answer_found,
+            style: TextStyle(
+              color: ColorConstants.mainColor,
+              fontSize: 70.sp,
+            ),
           )),
     );
   }
