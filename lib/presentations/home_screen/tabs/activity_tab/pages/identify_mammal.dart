@@ -222,7 +222,7 @@ class _IdentifyMammalState extends State<IdentifyMammal> {
     return Container(
       child: Column(
         children: [
-          if (!_showAnswerField)
+          if (!_showAnswerField && _questionDetails != null)
             WidgetUtil.noAnswerFoundButton(
                 onPressed: () {
                   _showAnswerField = true;
@@ -240,6 +240,7 @@ class _IdentifyMammalState extends State<IdentifyMammal> {
     try {
       final result =
           await apiRepository.getQuestionDetails(question_id: widget.data.id!);
+      print("**********question_id: ${widget.data.id} ${widget.data.title}");
       _isLoading = false;
       setState(() {
         if (result != null) {

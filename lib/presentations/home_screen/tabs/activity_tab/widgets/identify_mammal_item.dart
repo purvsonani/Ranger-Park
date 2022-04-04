@@ -1,61 +1,8 @@
-// import 'package:extended_image/extended_image.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:ranger_park/core/constants/constants.dart';
-// import 'package:ranger_park/core/utils/color_constants.dart';
-//
-// import '../../../../../models/answer_details.dart';
-//
-// class IdentifyMammmalItem extends StatelessWidget {
-//   final AnswerDetails? data;
-//   final int? index;
-//   final VoidCallback onPressed;
-//
-//   IdentifyMammmalItem(
-//       {this.data, this.index, required this.onPressed});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialButton(
-//       onPressed: onPressed,
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(90.w)),
-//       padding: EdgeInsets.zero,
-//       child: Column(
-//         children: [
-//           Card(
-//             shape:
-//             RoundedRectangleBorder(borderRadius: BorderRadius.circular(90.w)),
-//             elevation: 15,
-//             child: ExtendedImage.network(
-//               data?.answerImageUrl ?? "",
-//               width: double.infinity,
-//               height: 0.185.sh,
-//               cache: true,
-//               fit: BoxFit.cover,
-//               shape: BoxShape.rectangle,
-//               borderRadius: BorderRadius.circular(90.w),
-//               handleLoadingProgress: true,
-//             ),
-//           ),
-//           Constants.spaceVertical(10),
-//           Container(child: Text(
-//             "${data?.imageTitle}"
-//           ),)
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ranger_park/core/constants/constants.dart';
 import 'package:ranger_park/core/utils/color_constants.dart';
-
-import '../../../../../core/widgets/widgets_util.dart';
 import '../../../../../models/answer_details.dart';
 import 'package:flutter/material.dart';
 
@@ -107,7 +54,7 @@ class IdentifyMammmalItem extends StatelessWidget {
             child: Text(
               data?.imageTitle ?? "",
               textAlign: TextAlign.center,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(color: ColorConstants.white, fontSize: 70.sp),
             ),

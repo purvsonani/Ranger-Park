@@ -44,6 +44,9 @@ class StringConstants {
   static String oregon_states_park = "Oregon State Parks";
 
   static String no_answer_found = "NO ANSWER FOUND";
+  static String upload_photo = "UPLOAD PHOTO";
 
   static String type_here = "Type here...";
+
+
 }

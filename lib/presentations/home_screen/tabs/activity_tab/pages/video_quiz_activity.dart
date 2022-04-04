@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,29 +15,40 @@ import 'package:ranger_park/models/park_details.dart';
 import 'package:ranger_park/models/question_details.dart';
 import 'package:ranger_park/models/question_model.dart';
 import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/widgets/answer_item.dart';
+import 'package:ranger_park/presentations/home_screen/tabs/activity_tab/widgets/video_player_widget.dart';
+import 'package:video_player/video_player.dart';
 
-class TextQuizActivity extends StatefulWidget {
+class VideoQuizActivity extends StatefulWidget {
   final QuestionModel data;
   final ParkDetails? parkData;
 
-  TextQuizActivity({required this.data, required this.parkData});
+  VideoQuizActivity({required this.data, required this.parkData});
 
   @override
-  State<TextQuizActivity> createState() => _TextQuizActivityState();
+  State<VideoQuizActivity> createState() => _VideoQuizActivityState();
 }
 
-class _TextQuizActivityState extends State<TextQuizActivity> {
+class _VideoQuizActivityState extends State<VideoQuizActivity> {
+  bool _isLoading = false;
+  int _selectedAnsIndex = -1;
+  bool _showAnswerField = false;
+  QuestionDetails? questionDetails;
+  TextEditingController _answerController = TextEditingController();
+  VideoPlayerController? _videoPlayerController;
+
   @override
   void initState() {
     super.initState();
     _getQuestionDetails();
   }
 
-  bool _isLoading = false;
-  int _selectedAnsIndex = -1;
-  bool _showAnswerField = false;
-  QuestionDetails? questionDetails;
-  TextEditingController _answerController = TextEditingController();
+  void _videoInit() {
+    _videoPlayerController =
+        VideoPlayerController.network("${questionDetails?.imageVideoUrl}")
+          ..initialize().then((_) {
+            setState(() {});
+          });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,28 +144,24 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
                 ),
               ),
               Constants.spaceVertical(20),
-              questionDetails == null
-                  ? Container()
-                  : Container(
-                      // child: CachedNetworkImage(
-                      //   imageUrl: "${questionDetails?.imageVideoUrl ?? ""}",
-                      //   placeholder: (context, url) => SpinKitThreeBounce(
-                      //     color: Colors.red,
-                      //   ),
-                      // ),
-                      child: ExtendedImage.network(
-                        "${questionDetails?.imageVideoUrl ?? ""}",
-                        cache: true,
-                        handleLoadingProgress: true,
-                        loadStateChanged: (state) {
-                          if (state.extendedImageLoadState ==
-                              LoadState.loading) {
-                            return SpinKitThreeBounce(
-                                color: ColorConstants.white, size: 70.w);
-                          }
-                        },
-                      ),
+              Container(
+                height: 0.60.sw,
+                margin: EdgeInsets.symmetric(vertical: 50.h),
+                alignment: Alignment.center,
+                child: Card(
+                  color: ColorConstants.black,
+                  margin: EdgeInsets.zero,
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: VideoViewWidget(
+                      videoController: _videoPlayerController,
                     ),
+                  ),
+                ),
+              ),
               Constants.spaceVertical(30),
               Container(
                 child: Text(
@@ -244,12 +250,12 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
           Constants.spaceVertical(85),
           WidgetUtil.startAdventureButtonWidget(
               onPressed: () {},
-              btnTitle: "${questionDetails?.btnText}",
+              btnTitle: "${questionDetails?.btnText ?? ""}",
               btnTextStyle: TextStyle(
                 color: ColorConstants.mainColor,
                 fontSize: 70.sp,
               ),
-              image: "${questionDetails?.activityIconUrl}"),
+              image: "${questionDetails?.activityIconUrl ?? ""}"),
         ],
       ),
     );
@@ -262,12 +268,12 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
           if (_selectedAnsIndex != -1 && !_showAnswerField)
             WidgetUtil.startAdventureButtonWidget(
                 onPressed: () {},
-                btnTitle: "${questionDetails?.btnText ?? ""}",
+                btnTitle: "${questionDetails?.btnText}",
                 btnTextStyle: TextStyle(
                   color: ColorConstants.mainColor,
                   fontSize: 70.sp,
                 ),
-                image: "${questionDetails?.activityIconUrl ?? ""}"),
+                image: "${questionDetails?.activityIconUrl}"),
           Constants.spaceVertical(45),
           if (!_showAnswerField && questionDetails != null)
             WidgetUtil.noAnswerFoundButton(
@@ -294,6 +300,7 @@ class _TextQuizActivityState extends State<TextQuizActivity> {
           if (result.isSuccess()) {
             if (result.data != null) {
               questionDetails = result.data;
+              _videoInit();
             }
           } else {
             print("**************Result Null getQuestionDetails()**********");

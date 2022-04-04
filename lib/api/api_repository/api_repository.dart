@@ -22,7 +22,7 @@ class ApiRepository {
 
     try {
       final response = await _apiUtils.get(url: url);
-      print(response.data.toString());
+      // print(response.data.toString());
       return ParkListResponse.fromJson(response.data);
     } on Exception catch (e) {
       print("************getParkList() Exception************");
@@ -42,7 +42,7 @@ class ApiRepository {
     try {
       final response =
           await _apiUtils.post(url: url, queryParameters: queryParameters);
-      print(response.data.toString());
+      // print(response.data.toString());
       return ParkDetailsResponse.fromJson(response.data);
     } on Exception catch (e) {
       print("************getParkDetails() Exception************");
@@ -65,7 +65,7 @@ class ApiRepository {
     try {
       final response =
           await _apiUtils.post(url: url, queryParameters: queryParameters);
-      print(response.data.toString());
+      // print(response.data.toString());
       return QuestionDetailsResponse.fromJson(response.data);
     } on Exception catch (e) {
       print("************getParkDetails() Exception************");
