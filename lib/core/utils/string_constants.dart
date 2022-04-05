@@ -48,5 +48,7 @@ class StringConstants {
 
   static String type_here = "Type here...";
 
+  static String rangers_reward = "RANGER'S @";
+  static String complete_5_parks = "Complete 5 parks to get The @";
 
 }

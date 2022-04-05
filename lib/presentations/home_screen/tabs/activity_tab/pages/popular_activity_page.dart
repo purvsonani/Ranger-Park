@@ -1,5 +1,4 @@
-import 'dart:html';
-
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,6 +14,7 @@ import '../../../../../core/utils/fonts_constants.dart';
 import '../../../../../core/utils/image_constants.dart';
 import '../../../../../models/park_details.dart';
 import '../../../../../models/question_model.dart';
+import 'dart:io';
 
 class PopularActivityPage extends StatefulWidget {
   final QuestionModel data;
@@ -27,10 +27,12 @@ class PopularActivityPage extends StatefulWidget {
 }
 
 class _PopularActivityPageState extends State<PopularActivityPage> {
+  ImagePicker _imagePicker = ImagePicker();
   ApiRepository apiRepository = ApiRepository();
   QuestionDetails? _questionDetails;
   bool _isLoading = false;
   bool _imageSelected = false;
+  File? imageFile;
 
   @override
   void initState() {
@@ -120,24 +122,48 @@ class _PopularActivityPageState extends State<PopularActivityPage> {
   }
 
   Widget _buildImage() {
-    return Container(
-      height: 0.37.sh,
-      width: double.infinity,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(90.w),
-          color: ColorConstants.green),
-      child: Center(
-        child: GestureDetector(
-          onTap: () {},
-          child: CircleAvatar(
-            radius: 0.16.sw,
-            backgroundColor: ColorConstants.mainColor,
-            child: Image.asset(
-              ImageConstants.ic_camera,
-              height: 0.055.sh,
+    if (imageFile == null)
+      return Container(
+        height: 0.4.sh,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(90.w),
+            color: ColorConstants.green),
+        child: Center(
+          child: GestureDetector(
+            onTap: () {
+              _getImageFromCamera();
+            },
+            child: CircleAvatar(
+              radius: 0.16.sw,
+              backgroundColor: ColorConstants.mainColor,
+              child: Image.asset(
+                ImageConstants.ic_camera,
+                height: 0.055.sh,
+              ),
             ),
           ),
         ),
+      );
+
+    return Container(
+      height: 0.4.sh,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.w),
+          color: ColorConstants.green),
+      child: Center(
+        child: GestureDetector(
+            onTap: () {
+              _getImageFromCamera();
+            },
+            child: ExtendedImage.file(
+              imageFile!,
+              borderRadius: BorderRadius.circular(100.w),
+              shape: BoxShape.rectangle,
+              fit: BoxFit.cover,
+              width: double.infinity,
+            )),
       ),
     );
   }
@@ -168,9 +194,21 @@ class _PopularActivityPageState extends State<PopularActivityPage> {
                   fontSize: 70.sp,
                 ),
                 image: _questionDetails?.activityIconUrl ?? ""),
+          Constants.spaceVertical(50),
         ],
       ),
     );
+  }
+
+  void _getImageFromCamera() async {
+    XFile? pickedFile =
+        await _imagePicker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      imageFile = File(pickedFile.path);
+      _imageSelected = true;
+      setState(() {});
+    }
   }
 
   void _getParkDetails() async {

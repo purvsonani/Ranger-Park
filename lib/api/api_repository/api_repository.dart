@@ -4,6 +4,8 @@ import 'package:ranger_park/api/api_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:ranger_park/models/parks_list_response.dart';
 import 'package:ranger_park/models/question_details_response.dart';
+import 'package:ranger_park/models/ranger_details_response.dart';
+import 'package:ranger_park/models/rewards_response.dart';
 
 import '../../models/park_details_response.dart';
 
@@ -70,6 +72,47 @@ class ApiRepository {
     } on Exception catch (e) {
       print("************getParkDetails() Exception************");
       return QuestionDetailsResponse.withError(error: 0);
+    }
+  }
+
+  Future<RangerDetailsResponse> getRangerDetails(
+      {required int ranger_id}) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      print("************No Internet Connectivity************");
+      return RangerDetailsResponse.withError(error: 0);
+    }
+    final url = Api.baseUrl + ApiEndPoints.GET_RANGER_DETAILS;
+    Map<String, dynamic> queryParameters = {
+      "ranger_id": ranger_id,
+    };
+
+    try {
+      final response =
+      await _apiUtils.post(url: url, queryParameters: queryParameters);
+      // print(response.data.toString());
+      return RangerDetailsResponse.fromJson(response.data);
+    } on Exception catch (e) {
+      print("************getRangerDetails() Exception************");
+      return RangerDetailsResponse.withError(error: 0);
+    }
+  }
+
+  Future<RewardsResponse> getRewards() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      print("************No Internet Connectivity************");
+      return RewardsResponse.withError(error: 1);
+    }
+    final url = Api.baseUrl + ApiEndPoints.GET_REWARD;
+
+    try {
+      final response = await _apiUtils.get(url: url);
+      // print(response.data.toString());
+      return RewardsResponse.fromJson(response.data);
+    } on Exception catch (e) {
+      print("************getParkList() Exception************");
+      return RewardsResponse.withError(error: 0);
     }
   }
 }

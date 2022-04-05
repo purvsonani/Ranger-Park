@@ -153,7 +153,7 @@ class _ActivityTabState extends State<ActivityTab> {
         itemCount: _searchParksList?.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisExtent: 0.280.sh,
+          mainAxisExtent: 0.32.sh,
           crossAxisSpacing: 50.w,
           // mainAxisSpacing: 40.w,
         ),
@@ -161,7 +161,7 @@ class _ActivityTabState extends State<ActivityTab> {
           final data = _searchParksList![index];
           return ParkItem(
             parkDetails: data,
-            onTap: (){
+            onTap: () {
               onParkClick(data);
             },
           );
@@ -170,7 +170,7 @@ class _ActivityTabState extends State<ActivityTab> {
     );
   }
 
-  void onParkClick(ParkDetails data){
+  void onParkClick(ParkDetails data) {
     Constants.disableKeyboard(context);
     Get.to(() => ParkDetailsPage(parkData: data));
   }

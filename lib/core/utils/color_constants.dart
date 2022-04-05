@@ -26,6 +26,9 @@ class ColorConstants {
 
   static Color suffixIconBackground = fromHex("#4E5F40");
 
+  static Color rewardItemBackground = fromHex("#323E29");
+
+
 
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();

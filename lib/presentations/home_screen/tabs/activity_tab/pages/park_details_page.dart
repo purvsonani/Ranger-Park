@@ -215,6 +215,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
             StringConstants.activities,
             style: TextStyle(color: ColorConstants.white, fontSize: 120.sp),
           ),
+
         ],
       ),
     );
@@ -222,7 +223,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
 
   Widget buildActivitiesList() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 50.w),
       child: ListView.builder(
           shrinkWrap: true,
           primary: false,
@@ -244,7 +245,7 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
           ? Container()
           : ElevatedButton.icon(
               onPressed: () {
-                _onRangerClicked();
+                _onRangerClicked(parkDetails!);
               },
               style: ElevatedButton.styleFrom(
                   fixedSize: Size(0.85.sw, 130.w),
@@ -324,8 +325,8 @@ class _ParkDetailsPageState extends State<ParkDetailsPage> {
     }
   }
 
-  void _onRangerClicked() {
-    Get.to(() => RangerProfilePage());
+  void _onRangerClicked(ParkDetails parkDetails) {
+    Get.to(() => RangerProfilePage(parkData: parkDetails));
   }
 
   void _getParkDetails() async {
