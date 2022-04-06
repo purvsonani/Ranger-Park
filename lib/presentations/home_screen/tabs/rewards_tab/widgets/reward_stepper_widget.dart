@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:ranger_park/core/utils/color_constants.dart';
 
 class RewardStepperWidget extends StatelessWidget {
   int? totalSteps;
@@ -9,29 +10,24 @@ class RewardStepperWidget extends StatelessWidget {
   double? dotWidth;
   double? lineHeight;
   double? lineWidth;
-  double? DotBorderWidth;
+  Color? textColor;
   Color? selectedDotColor;
   Color? unselectedDotColor;
   Color? selectedLineColor;
   Color? unselectedLineColor;
-  Color? selectedDotBorderColor;
-  Color? unselectedDotBorderColor;
 
-  RewardStepperWidget({
-    required this.totalSteps,
-    required this.currentStep,
-    required this.dotHeight,
-    required this.dotWidth,
-    required this.lineHeight,
-    required this.lineWidth,
-    this.DotBorderWidth,
-    required this.selectedDotColor,
-    required this.unselectedDotColor,
-    required this.selectedLineColor,
-    required this.unselectedLineColor,
-    required this.selectedDotBorderColor,
-    required this.unselectedDotBorderColor,
-  });
+  RewardStepperWidget(
+      {required this.totalSteps,
+      required this.currentStep,
+      required this.dotHeight,
+      required this.dotWidth,
+      required this.lineHeight,
+      required this.lineWidth,
+      required this.selectedDotColor,
+      required this.unselectedDotColor,
+      required this.selectedLineColor,
+      required this.unselectedLineColor,
+      required this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +46,10 @@ class RewardStepperWidget extends StatelessWidget {
       }
 
       return Row(
-        children: [_buildDot(isSelectedDot, index), _buildLine(isSelectedLine)],
+        children: [
+          _buildDot(isSelectedDot, index),
+          _buildLine(isSelectedLine, isSelectedDot)
+        ],
       );
     });
 
@@ -64,24 +63,29 @@ class RewardStepperWidget extends StatelessWidget {
     return Container(
       height: dotHeight,
       width: dotWidth,
-      child: Center(child: Text("${index + 1}")),
+      child: Center(
+          child: Text(
+        "${index + 1}",
+        style: TextStyle(color: textColor),
+      )),
       decoration: BoxDecoration(
-        border: Border.all(
-            color: isSelectedDot
-                ? selectedDotBorderColor!
-                : unselectedDotBorderColor!,
-            width: DotBorderWidth!),
         shape: BoxShape.circle,
         color: isSelectedDot ? selectedDotColor : unselectedDotColor,
       ),
     );
   }
 
-  Widget _buildLine(bool isSelectedLine) {
+  Widget _buildLine(bool isSelectedLine, bool isSelectedDot) {
     return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: [
+          isSelectedDot ? ColorConstants.yellow : ColorConstants.green,
+          isSelectedLine ? ColorConstants.yellow : ColorConstants.green
+        ]),
+      ),
       height: lineHeight,
       width: lineWidth,
-      color: isSelectedLine ? selectedLineColor : unselectedLineColor,
+      // color: isSelectedLine ? selectedLineColor : unselectedLineColor,
     );
   }
 }
